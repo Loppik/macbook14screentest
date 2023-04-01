@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .lines {
+        width: 100%;
+        height: 18000px;
+        margin-bottom: 500px;
+      }
+      .lines__line {
+        height: 200px;
+        margin-bottom: 200px;
+      }
+      .lines__line--black {
+        background: black;
+      }
+      .lines__line--grey {
+        background: #343434;
+      }
+
+      .black-and-white-block {
+        width: 100%;
+        height: 150vh;
+        background: white;
+        margin-bottom: 200px;
+      }
+      .black-and-white-block--black {
+        background: black;
+      }
+
+      .ball-section {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="lines">
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+      <div class="lines__line lines__line--black"></div>
+
+      <div style="height: 5px; background: red; margin-bottom: 200px"></div>
+
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+      <div class="lines__line lines__line--grey"></div>
+    </section>
+
+    <section class="black-and-white-block black-and-white-block--black" onclick="blackWhiteBlockClick(this)">
+    </section>
+
+    <section class="ball-section">
+      <canvas id="ball-canvas" width="1350" height="750" onclick="changeCanvasBallSpeed()"></canvas>
+      <button onclick="changeCanvasColor()">Canvas Color</button>
+    </section>
+
+
+    <script>
+      function blackWhiteBlockClick(element) {
+        element.classList.toggle('black-and-white-block--black')
+      }
+
+      function changeCanvasBallSpeed() {
+        if (speedOptionsIndex === SPEED_OPTIONS.length - 1) {
+          speedOptionsIndex = 0
+        } else {
+          speedOptionsIndex += 1;
+        }
+        xv = SPEED_OPTIONS[speedOptionsIndex]
+        yv = SPEED_OPTIONS[speedOptionsIndex]
+      }
+      function changeCanvasColor() {
+        if (canvasColorIndex === CANVAS_COLORS.length - 1) {
+          canvasColorIndex = 0
+        } else {
+          canvasColorIndex += 1;
+        }
+      }
+
+      const FPS = 30;
+      let bs = 60;
+      let bx, by;
+      let xv, yv;
+      let canvas, context;
+
+      canvas = document.getElementById('ball-canvas')
+      context = canvas.getContext('2d');
+
+
+
+      setInterval(update, 1000 / FPS)
+
+      bx = canvas.width / 2;
+      by = canvas.height / 2;
+
+      CANVAS_COLORS = ['black', '#343434']
+      let canvasColorIndex = 0;
+      SPEED_OPTIONS = [15, 20, 30, 40];
+      let speedOptionsIndex = 0;
+      xv = SPEED_OPTIONS[speedOptionsIndex];
+      yv = SPEED_OPTIONS[speedOptionsIndex];
+
+      if (Math.floor(Math.random() * 2) === 0) {
+        xv = -xv;
+      }
+      if (Math.floor(Math.random() * 2) === 0) {
+        yv = -yv;
+      }
+
+      function update() {
+        bx += xv;
+        by += yv;
+
+        if (bx - bs/2 < 0 && xv < 0) {
+          xv = -xv
+        }
+        if (bx + bs/2 > canvas.width && xv > 0) {
+          xv = -xv
+        }
+        if (by - bs/2 < 0 && yv < 0) {
+          yv = -yv;
+        }
+        if (by + bs/2 > canvas.height && yv > 0) {
+          yv = -yv
+        }
+
+        context.fillStyle = CANVAS_COLORS[canvasColorIndex];
+        context.fillRect(0, 0, canvas.width, canvas.height)
+
+        context.fillStyle = "white";
+        console.log(bs)
+        context.fillRect(bx - bs/2, by - bs/2, bs, bs)
+      }
+    </script>
+  </body>
+</html>
